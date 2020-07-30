@@ -1,7 +1,7 @@
 import {capitalize} from '@core/utils'
 
 export default class DomListener {
-  constructor($root, listeners) {
+  constructor($root, listeners = []) {
     this.listeners = listeners;
     if (!$root) {
       throw new Error('$root is required')
