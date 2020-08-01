@@ -2,25 +2,41 @@ import ExcelComment from '@/core/ExcelComponent'
 
 export default class Formula extends ExcelComment {
   static className = 'excel__formula'
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: 'Formula',
-      listeners: ['input', 'click']
-    });
+      listeners: ['input', 'keydown'],
+      ...options
+    })
+    this.$el = $root
   }
 
   toHTML() {
     return `
       <div class="info">fx</div>
-      <div class="input" contenteditable spellcheck="false"></div>
+      <div id="formula" class="input" contenteditable spellcheck="false"></div>
     `
   }
 
-  onInput(event) {
-    console.log(`Formula event onInput: ${this.$root}`, event)
+  init() {
+    super.init();
+    this.formula = this.$el.find('#formula')
+    this.$on('table:select', $cell => this.formula.text($cell.text()))
+    this.$on('table:input', $formula => this.formula.text($formula.text()))
   }
 
-  onClick(event) {
-    console.log(`Formula event onClick: ${this.$root}`, event)
+  onInput(event) {
+    const text = event.target.textContent
+    console.log(text)
+    this.$dispatch('formula:input', text)
+  }
+
+  onKeydown(event) {
+    const keys = ['Enter', 'Tab']
+    if (keys.includes(event.key)) {
+      event.preventDefault()
+      this.$dispatch('formula:done')
+    }
   }
 }
+
