@@ -2,10 +2,11 @@ import ExcelComment from '@/core/ExcelComponent'
 
 export default class Header extends ExcelComment {
   static className = 'excel__header'
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: 'Header',
-      listeners: []
+      listeners: [],
+      ...options
     });
   }
   toHTML() {
