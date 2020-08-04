@@ -7,9 +7,9 @@ export default class Emitter {
    * (emit, fire, trigger)
    * @param {string} event
    * @param {args} args
-   * @return {boolean}dispatch
+   * @return {boolean}emit
    */
-  dispatch(event, ...args) {
+  emit(event, ...args) {
     if (!Array.isArray(this.listeners[event])) {
       return false
     }
@@ -41,13 +41,13 @@ export default class Emitter {
 // const unsubMyFunction = emitter.
 // subscribe('myFunction', data => console.log('MyFunction: ', data))
 //
-// emitter.dispatch('myFunction', 'myFunction data') // event not subscribe
+// emitter.emit('myFunction', 'myFunction data') // event not subscribe
 //
 // emitter
-// .dispatch('myFunction_NOT', 'myFunction data NOT') // event not subscribe
+// .emit('myFunction_NOT', 'myFunction data NOT') // event not subscribe
 //
 // setTimeout(() => {
-//   emitter.dispatch('myFunction', 'myFunction data after 2 sec')
+//   emitter.emit('myFunction', 'myFunction data after 2 sec')
 // }, 2000)
 //
 // setTimeout(() => {
@@ -55,6 +55,6 @@ export default class Emitter {
 // }, 3000)
 //
 // setTimeout(() => {
-//   emitter.dispatch('myFunction', 'myFunction data after 6 sec')
+//   emitter.emit('myFunction', 'myFunction data after 6 sec')
 // }, 6000)
 

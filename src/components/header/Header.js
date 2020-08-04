@@ -1,29 +1,25 @@
-import ExcelComment from '@/core/ExcelComponent'
+import {$} from '@core/dom'
+import ExcelComment from '@core/ExcelComponent'
+import {createHeader} from '@/components/header/header.template'
+import * as actions from '@/redux/actions'
 
 export default class Header extends ExcelComment {
   static className = 'excel__header'
   constructor($root, options) {
     super($root, {
       name: 'Header',
-      listeners: [],
+      listeners: ['input'],
       ...options
-    });
+    })
+    this.$el = $root
+    this.store = options.store
   }
+
   toHTML() {
-    return `
-    <input type="text" class="input" value="Новая таблица" />
+    return createHeader(this.store.getState())
+  }
 
-      <div>
-
-        <div class="button">
-          <i class="material-icons">delete</i>
-        </div>
-
-        <div class="button">
-          <i class="material-icons">exit_to_app</i>
-        </div>
-
-      </div>
-    `
+  onInput(event) {
+    this.$dispatch(actions.changeTitle($(event.target).text()))
   }
 }
