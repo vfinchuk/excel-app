@@ -1,4 +1,5 @@
-import ExcelComment from '@/core/ExcelComponent'
+import ExcelComment from '@core/ExcelComponent'
+import {$} from '@core/dom'
 
 export default class Formula extends ExcelComment {
   static className = 'excel__formula'
@@ -6,6 +7,7 @@ export default class Formula extends ExcelComment {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
+      subscribe: ['currentText'],
       ...options
     })
     this.$el = $root
@@ -20,22 +22,28 @@ export default class Formula extends ExcelComment {
 
   init() {
     super.init();
-    this.formula = this.$el.find('#formula')
-    this.$on('table:select', $cell => this.formula.text($cell.text()))
-    this.$on('table:input', $formula => this.formula.text($formula.text()))
+
+    this.$formula = this.$el.find('#formula')
+
+    this.$on('table:select', $cell => {
+      this.$formula.text($cell.data.value)
+    })
+  }
+
+  storeChanged({currentText}) {
+    this.$formula.text(currentText)
   }
 
   onInput(event) {
-    const text = event.target.textContent
-    console.log(text)
-    this.$dispatch('formula:input', text)
+    const text = $(event.target).text()
+    this.$emit('formula:input', text)
   }
 
   onKeydown(event) {
     const keys = ['Enter', 'Tab']
     if (keys.includes(event.key)) {
       event.preventDefault()
-      this.$dispatch('formula:done')
+      this.$emit('formula:done')
     }
   }
 }
