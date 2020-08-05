@@ -10,8 +10,12 @@ export default class Store {
     this.subscribers.push(fn)
     return {
       unsubscribe() {
-        this.subscribers = this.subscribers
-            .filter(subscribe => subscribe !== fn)
+        if (this.subscribers) {
+          this.subscribers = this.subscribers
+              .filter(subscribe => {
+                return subscribe !== fn
+              })
+        }
       }
     }
   }
