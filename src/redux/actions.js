@@ -34,3 +34,9 @@ export function changeTitle(data) {
     data
   }
 }
+
+export function updateDate() {
+  return {
+    type: types.UPDATE_DATE,
+  }
+}
