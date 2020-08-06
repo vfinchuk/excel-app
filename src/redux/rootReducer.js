@@ -1,4 +1,4 @@
-import * as types from '@/redux/types'
+import * as types from '../redux/types'
 
 export function rootReducer(state, action) {
   let field

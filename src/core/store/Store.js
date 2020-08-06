@@ -1,7 +1,6 @@
-import {rootReducer} from '@/redux/rootReducer'
-
 export default class Store {
   constructor(rootReducer, initialState = {}) {
+    this.rootReducer = rootReducer
     this.state = rootReducer({...initialState}, {type: '__INIT__'})
     this.subscribers = []
   }
@@ -12,16 +11,14 @@ export default class Store {
       unsubscribe() {
         if (this.subscribers) {
           this.subscribers = this.subscribers
-              .filter(subscribe => {
-                return subscribe !== fn
-              })
+              .filter(subscribe => subscribe !== fn)
         }
       }
     }
   }
 
   dispatch(action) {
-    this.state = rootReducer(this.state, action)
+    this.state = this.rootReducer(this.state, action)
     this.subscribers.forEach(subscribe => subscribe(this.state))
   }
 
